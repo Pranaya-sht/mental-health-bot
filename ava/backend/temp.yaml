@@ -1,0 +1,280 @@
+    system_prompt = (
+        "You are a friendly mental health information assistant. Follow these rules exactly:\n\n"
+        "1. For basic greetings:\n"
+        "   - Respond ONLY with a simple greeting like 'Hello!' or 'Hi there!' or 'Hey!'\n"
+        "   - Do NOT mention mental health, assistance, or any other topics\n"
+        "   - Keep it to 5 words maximum\n\n"
+        "2. For nonsensical input or random characters:\n"
+        "   - Respond ONLY with: 'Looks like there might have been a typo. Could you please rephrase your question?'\n"
+        "   - Do NOT provide other information.\n"
+        "   - Keep it to 7-8 words\n\n"
+        "3. For mental health questions:\n"
+        "   - Provide focused information using this context: {context}\n"
+        "   - Remove any Question_ID references\n\n"
+        "4. For unrelated topics:\n"
+        "   - Briefly mention your focus on mental health\n"
+        "   - Do not provide other information\n\n"
+        "5. **Crisis situations:**\n"
+        "   - If the user mentions words like 'suicide', 'emergency', 'help', 'crisis', 'harm', or shows distressing signs, immediately offer resources.\n"
+        "   - Provide appropriate resources such as hotlines, and professional help options.\n"
+        "   - If the user seems calm or the conversation is not about mental health, do NOT provide any resources.\n\n"
+        "6. **For compliments or general questions:**\n"
+        "   - Respond with simple statements of gratitude\n\n"
+        "For any conversation not related to mental health, keep your response to a maximum of 7-10 words and do NOT talk about anything else."
+        "Keep all responses concise and conversational."
+    )
+
+
+
+import React, { useState, useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom/client';
+import './App.css';
+
+function App() {
+  const [input, setInput] = useState('');
+  const [messages, setMessages] = useState([]);
+  const chatBoxRef = useRef(null); // Reference for the chat box
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setMessages([...messages, { text: input, sender: 'user' }]);
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/prompt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: input }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        const bulletPoints = data.response ? data.response.split('\n').filter(line => line.trim() !== '') : [];
+        setMessages([...messages, { text: input, sender: 'user' }, { text: data.response, sender: 'bot' }]);
+      } else {
+        setMessages([...messages, { text: input, sender: 'user' }, { text: "Sorry, I couldn't process your request.", sender: 'bot' }]);
+      }
+    } catch (error) {
+      setMessages([...messages, { text: input, sender: 'user' }, { text: "Sorry, I couldn't reach the server.", sender: 'bot' }]);
+    }
+    setInput('');
+
+  };
+
+  useEffect(() => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  const renderMessageText = (text) => {
+    const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+    const parts = text.split(urlRegex);
+
+    return parts.map((part, index) =>
+      urlRegex.test(part) ? (
+        <a
+          key={index}
+          href={part.startsWith('http') ? part : `http://${part}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="neon-link"
+        >
+          {part}
+        </a>
+      ) : (
+        part
+      )
+    );
+  };
+
+  
+  return (
+    <div className="App">
+      <h1>Mental Health Chatbot</h1>
+      <div className="chat-box" ref={chatBoxRef}>
+        {messages.map((message, index) => (
+          <div key={index} className={`message ${message.sender}`}>
+            <p>{renderMessageText(message.text)}</p>
+          </div>
+        ))}
+      </div>
+      <form onSubmit={handleSubmit} className="input-container">
+        <input
+          type="text"
+          placeholder="Type your message..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          className="input-field"
+        />
+        <button type="submit" className="submit-btn">Send</button>
+      </form>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('app')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+
+
+
+import groq
+import uvicorn
+import os
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from langchain.chains import create_retrieval_chain
+from langchain.chains.combine_documents import create_stuff_documents_chain
+from langchain.prompts import ChatPromptTemplate
+from langchain_community.document_loaders import CSVLoader
+from langchain_groq import ChatGroq
+from langchain_community.vectorstores import DocArrayInMemorySearch
+from langchain_community.embeddings import SentenceTransformerEmbeddings
+from typing import Dict, Any
+from pydantic import BaseModel
+from transformers import pipeline
+from typing import Dict, Any
+
+os.environ["GROQ_API_KEY"] = "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"
+
+app = FastAPI(title="MentalHelp Bot", description="A mental health assistance chatbot")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# pipe = pipeline("text-classification", model="madhurjindal/autonlp-Gibberish-Detector-492513457")
+
+# gibberish_detector = pipeline("text-classification", model="madhurjindal/autonlp-Gibberish-Detector-492513457")
+
+def setup_chain() -> create_retrieval_chain:
+    """
+    Set up the Retrieval chain with necessary components.
+    """
+    system_prompt = ( 
+        "You are called TheMentalSupp\n"
+        "You are a friendly mental health information assistant. Follow these rules exactly:\n\n"
+        "1. For basic interactions like greetings:\n"
+        "   - Respond ONLY with a simple and friendly reply. Keep it short and natural.\n\n"
+        "2. For nonsensical input, random characters, or gibberish:\n"
+        "   - Respond with nothing but: 'Looks like there might have been a typo. Could you please rephrase your questiom?'\n"
+        "   - Do NOT provide any other information or search through the documents.\n"
+        "   - Keep the response upto 7-8 words\n\n"
+        "3. For mental health questions:\n"
+        "   - Provide focused information using this context: {context}\n\n"
+        "4. For unrelated topics:\n"
+        "   - Deny the user's request politely.\n"
+        "   - Briefly mention your focus on mental health.\n"
+        "   - Do not provide other additional information.\n"
+        "   - Keep the response to a maximum of 7-8 words.\n\n"
+        "5. Crisis situations:\n"
+        "   - If the user mentions words like 'suicide', 'emergency', 'help', 'crisis', 'harm', or shows distressing signs, immediately offer resources.\n"
+        "   - Provide appropriate resources such as hotlines, and professional help options.\n"
+        "   - If the user seems calm or the conversation is not about mental health, do NOT provide any resources.\n\n"
+        "6. If the user provides compliments:\n"
+        "   - Respond with gratitude but keep the tone short and focused on mental health.\n\n"
+        "7. If the user asks for a virtual hug:\n"
+        "   - Do NOT deny virtual hugs. Use this emoji 🤗 ONLY when providing virtual hugs.\n\n"
+        "For any conversation not related to mental health, keep your response to a maximum of 7-10 words and do NOT talk about anything else.\n"
+        "Keep all unrelated responses concise.\n"
+        "Keep all mental health related responses detailed, to the point with a minimum of 50 words.\n"
+        "Keep your responses relevant and to the point.\n"
+        "If the user greets you, greet the user back. For no greetings, do NOT greet the user.\n"
+        "Be polite and compassionate at all times.\n"
+        "Vary your answers moderately."
+    )
+
+    loader = CSVLoader(file_path='Mental_Health_FAQ_1.csv', encoding='utf-8')
+    docs = loader.load()
+    
+    
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", system_prompt),
+        ("human", "{input}")
+    ])
+    
+    embeddings = SentenceTransformerEmbeddings(model_name='all-MiniLM-L6-v2')
+    db = DocArrayInMemorySearch.from_documents(docs, embedding=embeddings)
+    
+    retriever = db.as_retriever(
+        search_type="similarity",
+        search_kwargs={
+            "k": 3,
+            "score_threshold": 0.92
+        }
+    )
+
+    llm = ChatGroq(
+        groq_api_key=os.getenv("GROQ_API_KEY"),
+        model_name="mixtral-8x7b-32768",
+        temperature=0.3,
+        max_tokens=512,
+    )
+
+    question_answer_chain = create_stuff_documents_chain(llm, prompt)
+    chain = create_retrieval_chain(retriever, question_answer_chain)
+
+    return chain
+
+chain = setup_chain()
+
+class QueryRequest(BaseModel):
+    query: str
+
+@app.post("/prompt")
+async def process_prompt(query_data: QueryRequest) -> Dict[str, Any]:
+    """
+    Process the incoming prompt and return a response.
+    """
+    try:
+        query = query_data.query.strip()
+
+            
+        if not query:
+            return {
+                "response": "Please ask a question.",
+                "status": "success"
+            }
+
+        # Regular query processing
+        response = chain.invoke({"input": query})
+        answer = response.get('answer', '').strip()
+            
+        if not answer:
+            return {
+                "response": "I can help you with mental health-related questions. What would you like to know?",
+                "status": "success"
+            }
+            
+        # Print the top 3 similar responses
+        top_responses = response.get('responses', [])
+        for i, resp in enumerate(top_responses):
+            print(f"Top {i+1} Response: {resp['text']}")
+            
+        print("HIIIIIIIIiiii")
+            
+        return {
+            "response": answer,
+            "status": "success"
+        }
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return {
+            "response": "I couldn't process that. Could you try asking differently?",
+            "status": "success"
+        }
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

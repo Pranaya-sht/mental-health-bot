@@ -1,0 +1,3 @@
+- heliosbrahma/mental_health_chatbot_dataset (cols: human, bot -> consists of human-bot conversations)
+- Amod/mental_health_counseling_conversations (cols: context, response -> consists of situations described in first person, and responses to them which ranges from being serious to polite in general)
+- mpingale/mental-health-chat-dataset : this consists of many questions with 2000+ total answers from various therapists on counselchat.com (cols:questionID, questionTitle, questionText, questionLink, topic, therapistInfo, therapistURL, answerText, upvotes, views, text)
