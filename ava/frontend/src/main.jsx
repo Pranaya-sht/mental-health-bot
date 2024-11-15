@@ -10,6 +10,8 @@ import {
 import { SignedIn, SignedOut, SignIn, SignInButton, UserButton } from "@clerk/clerk-react";
 import { ClerkProvider } from '@clerk/clerk-react'
 import SignInPage from './component/SignInPage';
+import './App.css';
+
 
 
 
@@ -34,10 +36,12 @@ const router = createBrowserRouter([
                     <UserButton
                         appearance={{
                             elements: {
-                                avatarImage: "hover:scale-110 ", userButtonAvatarBox: 'hover:scale-110 transition-transform duration-200'
+                                // Customizes the user avatar
+                                userButtonAvatarBox: "w-12 h-12 rounded-50", // Makes the avatar square and sets size
                             },
                         }}
                     />
+
                 </div>
 
                 <App />

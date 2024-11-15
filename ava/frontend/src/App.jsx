@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
-import './App.css';
+// import './App.css';
 
 import Message from './component/Message';
 import UserName from './component/UserName'
@@ -17,10 +17,13 @@ function App() {
 
 
 
-
   // Access the user's name
   const firstName = user.firstName;
   const lastName = user.lastName;
+
+
+
+
 
 
 
@@ -81,8 +84,8 @@ function App() {
   return (
     <div className="flex flex-col h-screen bg-gray-900 text-gray-200">
       <h1 className="text-center bg-slate-950 text-5xl font-bold text-blue-500 neon-text py-6">
-        Mental Health Chatbot
-        <h1 className="text-sm mt-0 w-full flex justify-end pr-6 text-gray-400 italic font-semibold tracking-wide">
+        ManobalAI
+        <h1 className="text-xs mt-2 w-full flex justify-end pr-11 text-gray-400 italic font-semibold tracking-wide">
           <UserName />
         </h1>
 
@@ -101,7 +104,7 @@ function App() {
               <p className="text-sm text-gray-400 mb-1">{firstName}</p>
             )}
             {message.sender === 'bot' && (
-              <p className="text-sm  text-gray-400 mb-1">Manobal AI</p>
+              <p className="text-sm  text-gray-400 mb-1">ManobalAI</p>
             )}
             <p
               className={`p-3 rounded-lg ${message.sender === 'user'
@@ -135,10 +138,13 @@ function App() {
           />
           <button
             type="submit"
-            className="ml-4 px-6 py-3 bg-cyan-600 text-gray-200 font-semibold rounded-lg hover:bg-cyan-700 focus:ring-2 focus:ring-cyan-500 neon-btn"
+            className="ml-4 px-6 py-3 bg-cyan-600 text-gray-200 font-semibold rounded-lg transition-all duration-300 ease-in-out transform hover:shadow-[0_0_15px_2px_rgba(56,189,248,0.8)] focus:shadow-[0_0_15px_2px_rgba(56,189,248,0.8)] active:scale-95"
           >
             Send
           </button>
+
+
+
         </form>
       ) : (
         <div className="p-4 text-center text-gray-400">
