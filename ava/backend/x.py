@@ -24,4 +24,5 @@ def fetch_users():
 
 if __name__ == "__main__":
     users = fetch_users()
-    print(users)
+    for user in users:
+        print(f"ID: {user['id']}, Email: {user['email_addresses'][0]['email_address']}")
