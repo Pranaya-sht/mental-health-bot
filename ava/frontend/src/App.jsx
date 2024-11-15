@@ -83,7 +83,7 @@ function App() {
 
   return (
     <div className="flex flex-col h-screen bg-gray-900 text-gray-200">
-      <h1 className="text-center bg-slate-950 text-5xl font-bold text-blue-500 neon-text py-6">
+      <h1 className="text-left bg-slate-950 text-5xl font-bold text-blue-500 neon-text py-6">
         ManobalAI
         <h1 className="text-xs mt-2 w-full flex justify-end pr-11 text-gray-400 italic font-semibold tracking-wide">
           <UserName />
