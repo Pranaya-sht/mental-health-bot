@@ -7,6 +7,15 @@ export default defineConfig({
   css: {
     postcss: {
       plugins: [tailwindcss()],
+      server: {
+        proxy: {
+          "/api": {
+            target: "https://api.clerk.com",
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/api/, ""),
+          },
+        },
+      },
     },
   },
 })

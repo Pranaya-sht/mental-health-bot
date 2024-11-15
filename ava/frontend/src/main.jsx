@@ -30,7 +30,7 @@ const router = createBrowserRouter([
             <SignInPage></SignInPage>
 
             <SignedIn>
-                <div className=" absolute  right-5 h-10 flex items-center  ">
+                <div className=" absolute  right-5 h-10 flex py-12 mr-10">
                     <UserButton
                         appearance={{
                             elements: {

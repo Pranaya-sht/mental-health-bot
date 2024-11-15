@@ -126,6 +126,9 @@ async def process_prompt(query_data: QueryRequest) -> Dict[str, Any]:
 
         # Regular query processing
         response = chain.invoke({"input": query})
+        
+        print("Response: ", response)
+        
         answer = response.get('answer', '').strip()
             
         if not answer:
