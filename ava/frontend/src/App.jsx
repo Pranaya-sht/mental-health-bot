@@ -4,7 +4,14 @@ import UserName from './component/UserName';
 import { useUser } from '@clerk/clerk-react';
 import ManobalAILogo from './pictures/ManobalAI.svg'
 import ManobalAI_Logo from './pictures/ManobalAI.png'
+import { Link } from "react-router-dom";
+import { GoGraph } from "react-icons/go";
+
+
+
 function App() {
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Manage visibility of the floating menu
   const { isSignedIn, user, isLoaded } = useUser();
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
@@ -12,9 +19,17 @@ function App() {
   const [showHistory, setShowHistory] = useState(false); // State to toggle history view
   const chatBoxRef = useRef(null);
 
+
   const firstName = user.firstName;
   const lastName = user.lastName;
   const fullName = `${firstName} ${lastName}`.trim();
+
+
+  // Toggle the menu visibility
+  const toggleMenu = (e) => {
+    e.stopPropagation(); // Prevent triggering other click events
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   // Handle the submit action for sending a message
   const handleSubmit = async (e) => {
@@ -94,7 +109,7 @@ function App() {
     <div className="flex h-screen bg-gray-900 text-gray-200">
       {/* History Box */}
       {showHistory && (
-        <div className="w-1/4 bg-gray-800 text-gray-300 shadow-inner p-4 space-y-2 overflow-y-auto">
+        <div className="w-1/4 bg-gray-800-800 text-gray-300 shadow-inner p-4 space-y-2 overflow-y-auto">
           <h2 className="text-lg font-semibold text-blue-500">History</h2>
           {messages.filter(message => message.sender === 'user').map((message, index) => (
             <div
@@ -112,20 +127,33 @@ function App() {
       {/* Main Chat Interface */}
       <div className="flex flex-col flex-grow">
         {/* Header */}
-        <h1
-          onClick={toggleHistory} // Toggle history box
-          className="text-left bg-slate-950 text-5xl font-bold text-blue-500 neon-text py-6 cursor-pointer"
-        >
-          ManobalAI
-          <h1 className="text-xs mt-2 w-full flex justify-end pr-11 text-gray-400 italic font-semibold tracking-wide">
+        <div className="text-left bg-slate-950 text-5xl font-bold text-blue-500 neon-text py-6 cursor-pointer flex items-center">
+          {/* Title and Icon */}
+          <div className="flex ">
+            {/* Title */}
+            <h1 onClick={toggleHistory}>ManobalAI</h1>
+            <div className='ml-4'>
 
+              <GoGraph size={50} className=" border-4 border-blue-700   cursor-pointer " />
+              <p className='text-sm flex  '>View_Graph</p>
+            </div>
+          </div>
+
+
+          {/* User Info */}
+          <h1 className="text-xs mt-12 w-full flex justify-end pr-7 text-gray-400 italic font-semibold tracking-wide">
             <UserName />
           </h1>
-        </h1>
+        </div>
+
+
+
+
+
 
         {/* Chat Box */}
         <div
-          className="chat-box flex-grow overflow-y-auto p-4 space-y-4 bg-gray-800 shadow-inner rounded-lg neon-border"
+          className="chat-box flex-grow overflow-y-auto p-4 space-y-4 bg-gray-600 shadow-inner rounded-lg neon-border"
           ref={chatBoxRef}
         >
           {messages.map((message, index) => (

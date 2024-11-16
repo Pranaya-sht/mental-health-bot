@@ -12,7 +12,7 @@ from langchain_community.vectorstores import DocArrayInMemorySearch
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 from typing import Dict, Any
 from pydantic import BaseModel
-from transformers import pipeline
+# from transformers import pipeline
 from typing import Dict, Any
 
 os.environ["GROQ_API_KEY"] = "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"
