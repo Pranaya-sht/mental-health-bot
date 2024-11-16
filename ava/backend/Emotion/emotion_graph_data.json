@@ -58,5 +58,9 @@
     {
         "emotion": "surprise",
         "score": 0.6659113168716431
+    },
+    {
+        "emotion": "neutral",
+        "score": 0.5494767427444458
     }
 ]

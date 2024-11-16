@@ -54,34 +54,51 @@ const Graph = ({ data }) => {
 
     return (
         <>
-            <button onClick={handleSubmit}>
-                Analyze Emotion
-            </button>
+            <div className="p-6 bg-gray-800 text-gray-200 min-h-screen flex flex-col items-center">
+                {/* Analyze Emotion Button */}
+                <button
+                    onClick={handleSubmit}
+                    className="px-6 py-3 bg-cyan-600 text-white font-semibold rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400 focus:ring-2 focus:ring-cyan-500"
+                >
+                    Analyze Emotion
+                </button>
 
+                {/* Emotion Result */}
+                {emotionResult && (
+                    <div className="mt-6 bg-gray-700 p-4 rounded-lg shadow-md w-full max-w-md">
+                        <h3 className="text-lg font-bold text-cyan-400">Detected Emotion</h3>
+                        <p className="mt-2 text-lg">Emotion: <span className="font-semibold">{emotionResult.emotion}</span></p>
+                        <p className="mt-1">Confidence Score: <span className="font-mono">{emotionResult.score.toFixed(4)}</span></p>
+                    </div>
+                )}
 
+                {/* Error Message */}
+                {error && (
+                    <p className="mt-4 text-red-500 font-semibold">
+                        {error}
+                    </p>
+                )}
 
-            {emotionResult && (
-                <div >
-                    <h3>Detected Emotion: {emotionResult.emotion}</h3>
-                    <p>Confidence Score: {emotionResult.score.toFixed(4)}</p>
-                </div>
-            )}
+                {/* Generate Graph Button */}
+                <button
+                    onClick={generateGraph}
+                    className="mt-6 px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-indigo-400 focus:ring-2 focus:ring-indigo-500"
+                >
+                    Generate Emotion Graph
+                </button>
 
-            {/* Error Message */}
-            {error && <p >{error}</p>}
-
-            {/* Generate Graph Button */}
-            <button onClick={generateGraph}>
-                Generate Emotion Graph
-            </button>
-
-            {/* Display Graph */}
-            {graphUrl && (
-                <div >
-                    <h3>Emotion Graph</h3>
-                    <img src={graphUrl} alt="Emotion Graph" />
-                </div>
-            )}
+                {/* Display Graph */}
+                {graphUrl && (
+                    <div className="mt-6 bg-gray-700 p-4 rounded-lg shadow-md w-full max-w-md">
+                        <h3 className="text-lg font-bold text-indigo-400">Emotion Graph</h3>
+                        <img
+                            src={graphUrl}
+                            alt="Emotion Graph"
+                            className="mt-4 rounded-lg border-2 border-cyan-500"
+                        />
+                    </div>
+                )}
+            </div>
 
         </>
     );
