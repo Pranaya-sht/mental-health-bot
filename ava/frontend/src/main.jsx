@@ -12,6 +12,8 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import SignInPage from './component/SignInPage';
 import './App.css';
 import { UserProfile } from "@clerk/clerk-react";
+import ErrorPage from './component/ErrorPage';
+import GraphPage from './component/GraphPage'
 
 
 
@@ -30,6 +32,10 @@ if (!PUBLISHABLE_KEY) {
 const router = createBrowserRouter([
     {
         path: "/",
+        errorElement: (
+            <ErrorPage />
+        ),
+
         element: (
             <header>
                 <SignInPage />
@@ -66,6 +72,15 @@ const router = createBrowserRouter([
             </SignedIn>
         ),
     },
+    {
+        path: "/Graph",
+        element: (
+            <GraphPage />
+
+
+        ),
+    },
+
 ]);
 
 

@@ -1,0 +1,62 @@
+[
+    {
+        "emotion": "sadness",
+        "score": 0.9917802214622498
+    },
+    {
+        "emotion": "sadness",
+        "score": 0.9940444827079773
+    },
+    {
+        "emotion": "disgust",
+        "score": 0.41536349058151245
+    },
+    {
+        "emotion": "anger",
+        "score": 0.9894333481788635
+    },
+    {
+        "emotion": "anger",
+        "score": 0.9894333481788635
+    },
+    {
+        "emotion": "joy",
+        "score": 0.9675107002258301
+    },
+    {
+        "emotion": "joy",
+        "score": 0.5826314091682434
+    },
+    {
+        "emotion": "disgust",
+        "score": 0.9171983599662781
+    },
+    {
+        "emotion": "fear",
+        "score": 0.9953349232673645
+    },
+    {
+        "emotion": "sadness",
+        "score": 0.9933198690414429
+    },
+    {
+        "emotion": "anger",
+        "score": 0.9815374612808228
+    },
+    {
+        "emotion": "anger",
+        "score": 0.8614100217819214
+    },
+    {
+        "emotion": "neutral",
+        "score": 0.5499793291091919
+    },
+    {
+        "emotion": "neutral",
+        "score": 0.8128671050071716
+    },
+    {
+        "emotion": "surprise",
+        "score": 0.6659113168716431
+    }
+]

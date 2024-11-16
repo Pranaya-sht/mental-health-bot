@@ -6,6 +6,8 @@ import ManobalAILogo from './pictures/ManobalAI.svg'
 import ManobalAI_Logo from './pictures/ManobalAI.png'
 import { Link } from "react-router-dom";
 import { GoGraph } from "react-icons/go";
+import GraphPage from './component/GraphPage';
+
 
 
 
@@ -133,9 +135,11 @@ function App() {
             {/* Title */}
             <h1 onClick={toggleHistory}>ManobalAI</h1>
             <div className='ml-4'>
+              <Link to={'\Graph'} >
 
-              <GoGraph size={50} className=" border-4 border-blue-700   cursor-pointer " />
-              <p className='text-sm flex  '>View_Graph</p>
+                <GoGraph size={50} className=" border-4 border-blue-700   cursor-pointer " />
+                <p className='text-sm flex  '>View_Graph</p>
+              </Link>
             </div>
           </div>
 
@@ -189,6 +193,7 @@ function App() {
           )}
         </div>
 
+
         {/* Input Box */}
         {isSignedIn ? (
           <form
@@ -204,6 +209,7 @@ function App() {
             />
             <button
               type="submit"
+              onClick={() => { <GraphPage data={input} /> }}
               className="ml-4 px-6 py-3 bg-cyan-600 text-gray-200 font-semibold rounded-lg transition-all duration-300 ease-in-out transform hover:shadow-[0_0_15px_2px_rgba(56,189,248,0.8)] focus:shadow-[0_0_15px_2px_rgba(56,189,248,0.8)] active:scale-95"
             >
               Send

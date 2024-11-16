@@ -1,4 +1,4 @@
-import groq
+# import groq
 import uvicorn
 import os
 from fastapi import FastAPI, Request
@@ -13,7 +13,7 @@ from langchain_community.embeddings import SentenceTransformerEmbeddings
 from typing import Dict, Any
 from pydantic import BaseModel
 # from transformers import pipeline
-from typing import Dict, Any
+
 
 os.environ["GROQ_API_KEY"] = "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"
 
@@ -75,13 +75,12 @@ def setup_chain() -> create_retrieval_chain:
     
     
     
-    
     prompt = ChatPromptTemplate.from_messages([
         ("system", system_prompt),
         ("human", "{input}")
     ])
     
-    embeddings = SentenceTransformerEmbeddings(model_name='all-MiniLM-L6-v2')
+    embeddings = SentenceTransformerEmbeddings(model_name='all-MiniLM-L6-v2') #vector embedding
     db = DocArrayInMemorySearch.from_documents(docs, embedding=embeddings)
     
     retriever = db.as_retriever(
