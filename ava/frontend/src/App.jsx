@@ -7,6 +7,7 @@ import ManobalAI_Logo from './pictures/ManobalAI.png'
 import { Link } from "react-router-dom";
 import { GoGraph } from "react-icons/go";
 import GraphPage from './component/GraphPage';
+import Test from './component/Test';
 
 
 
@@ -129,25 +130,24 @@ function App() {
       {/* Main Chat Interface */}
       <div className="flex flex-col flex-grow">
         {/* Header */}
-        <div className="text-left bg-slate-950 text-5xl font-bold text-blue-500 neon-text py-6 cursor-pointer flex items-center">
+        <div className=" bg-slate-950 text-5xl font-bold text-blue-500 neon-text py-6 cursor-pointer ">
           {/* Title and Icon */}
-          <div className="flex ">
+          <div className="flex ml-4">
             {/* Title */}
             <h1 onClick={toggleHistory}>ManobalAI</h1>
-            <div className='ml-4'>
+            <div className='ml-4 hover:mr-2 hover:mt-2 active:size-9'>
               <Link to={'\Graph'} >
 
-                <GoGraph size={50} className=" border-4 border-blue-700   cursor-pointer " />
-                <p className='text-sm flex  '>View_Graph</p>
+                <GoGraph size={50} className=" border-2   text-cyan-700 rounded-md p-1  border-cyan-400  cursor-pointer  bg-teal-300  " />
+                <p className='text-sm flex text-cyan-700 '>View_Graph</p>
               </Link>
+
             </div>
           </div>
-
+          <Test />
 
           {/* User Info */}
-          <h1 className="text-xs mt-12 w-full flex justify-end pr-7 text-gray-400 italic font-semibold tracking-wide">
-            <UserName />
-          </h1>
+
         </div>
 
 

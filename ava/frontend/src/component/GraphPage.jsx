@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+
 const Graph = ({ data }) => {
     const [userInput, setUserInput] = useState("");
     const [emotionResult, setEmotionResult] = useState(null);
@@ -17,14 +18,11 @@ const Graph = ({ data }) => {
         e.preventDefault();
         setError("");
         setEmotionResult(null);
-
-        console.log("userin: ", userInput)
-
+        console.log("userin: ", userInput);
         try {
             const response = await axios.post("http://127.0.0.1:8000/analyze-emotion", {
                 text: userInput,
             });
-
             setEmotionResult(response.data);
             setUserInput(""); // Clear input field
         } catch (err) {
@@ -37,12 +35,10 @@ const Graph = ({ data }) => {
     const generateGraph = async () => {
         setError("");
         setGraphUrl("");
-
         try {
             const response = await axios.get("http://127.0.0.1:8000/generate-graph", {
                 responseType: "blob",
             });
-
             // Convert Blob to a URL for display
             const url = URL.createObjectURL(new Blob([response.data]));
             setGraphUrl(url);
@@ -55,6 +51,14 @@ const Graph = ({ data }) => {
     return (
         <>
             <div className="p-6 bg-gray-800 text-gray-200 min-h-screen flex flex-col items-center">
+                {/* Back Button */}
+                <button
+                    onClick={() => window.history.back()}
+                    className="self-start mb-4 px-4 py-2 bg-red-600 text-white font-semibold rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-red-400 focus:ring-2 focus:ring-red-500"
+                >
+                    Back
+                </button>
+
                 {/* Analyze Emotion Button */}
                 <button
                     onClick={handleSubmit}
@@ -89,20 +93,20 @@ const Graph = ({ data }) => {
 
                 {/* Display Graph */}
                 {graphUrl && (
-                    <div className="mt-6 bg-gray-700 p-4 rounded-lg shadow-md w-full max-w-md">
-                        <h3 className="text-lg font-bold text-indigo-400">Emotion Graph</h3>
-                        <img
-                            src={graphUrl}
-                            alt="Emotion Graph"
-                            className="mt-4 rounded-lg border-2 border-cyan-500"
-                        />
+                    <div className="mt-6 bg-gray-700 p-4 rounded-lg shadow-md w-full">
+                        <h3 className="text-xl font-bold text-indigo-400">Emotion Graph</h3>
+                        <div className="flex items-center justify-center">
+                            <img
+                                src={graphUrl}
+                                alt="Emotion Graph"
+                                className="mt-4 rounded-lg border-2 border-cyan-500"
+                            />
+                        </div>
                     </div>
                 )}
             </div>
-
         </>
     );
 };
-
 
 export default Graph;

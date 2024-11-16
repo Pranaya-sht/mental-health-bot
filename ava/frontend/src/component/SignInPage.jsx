@@ -1,8 +1,8 @@
 import { SignedOut, SignIn } from '@clerk/clerk-react';
 import React from 'react';
 import { Typewriter } from 'react-simple-typewriter';
-import ManobalAILogo from '../pictures/ManobalAI.svg'
-import ManobalAI_Logo from '../pictures/ManobalAI.png'
+import ManobalAI_Logo from '../pictures/ManobalAI.png';
+
 export default function SignInPage() {
     return (
         <SignedOut>
@@ -10,23 +10,15 @@ export default function SignInPage() {
                 <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
                     <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
                         <img
-                            alt=""
+                            alt="Background"
                             src={ManobalAI_Logo}
                             className="absolute inset-0 h-full w-full object-cover opacity-80"
                         />
                         <div className="hidden lg:relative lg:block lg:p-12">
-                            <a className="block text-white" href="#">
-                                <span className="sr-only">Home</span>
-                                <svg
-                                    className="h-8 sm:h-10"
-                                    viewBox="0 0 28 24"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    {/* SVG Path */}
-                                </svg>
-                            </a>
-                            <h2 className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
+                            <h2
+                                className="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl bg-cover"
+                                style={{ backgroundImage: "url('/pictures/bg.png')" }}
+                            >
                                 <Typewriter
                                     words={['Welcome to ManobalAI 🧠💪']}
                                     loop={false}
@@ -48,19 +40,17 @@ export default function SignInPage() {
                                     href="#"
                                 >
                                     <span className="sr-only">Home</span>
-                                    <svg className="h-8 sm:h-10" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        {/* SVG Path */}
-                                    </svg>
                                 </a>
                             </div>
                             <div className="flex justify-center">
                                 <SignIn
                                     appearance={{
                                         elements: {
-                                            formButtonPrimary: 'bg-slate-500 hover:bg-slate-400 text-sm',
+                                            formButtonPrimary: 'hover:bg-slate-400 text-sm',
                                             headerTitle: 'font-bold text-xl text-red-600',
                                             card: '',
                                             cardBox: 'w-full',
+                                            rootBox: ''
                                         },
                                     }}
                                 />

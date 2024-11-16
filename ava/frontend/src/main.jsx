@@ -14,6 +14,8 @@ import './App.css';
 import { UserProfile } from "@clerk/clerk-react";
 import ErrorPage from './component/ErrorPage';
 import GraphPage from './component/GraphPage'
+import Test from './component/Test'
+import UserName from './component/UserName'
 
 
 
@@ -40,14 +42,17 @@ const router = createBrowserRouter([
             <header>
                 <SignInPage />
                 <SignedIn>
-                    <div className="absolute right-5 h-10 flex py-12 mr-10">
+                    <div className="absolute   right-12 mt-5 flex flex-col ">
                         <UserButton
                             appearance={{
                                 elements: {
-                                    userButtonAvatarBox: "w-12 h-12 rounded-50", // Customizes the avatar
+                                    userButtonAvatarBox: "w-10 h-10 rounded-50 ml-9", // Customizes the avatar
                                 },
                             }}
                         />
+                        <h1 className="  text-sm mt-3  pr-7 text-gray-400 italic font-semibold   ">
+                            <UserName />
+                        </h1>
                     </div>
                     <App />
                 </SignedIn>
@@ -64,9 +69,11 @@ const router = createBrowserRouter([
                             elements: {
                                 // pageScrollBox: "bg-orange-950"
                             },
+
                         }}
 
                     />
+
 
                 </div>
             </SignedIn>
@@ -80,6 +87,7 @@ const router = createBrowserRouter([
 
         ),
     },
+
 
 ]);
 
